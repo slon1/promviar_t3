@@ -467,6 +467,46 @@ MonoBehaviour:
   _resolutionZ: 128
   _planeSize: {x: 20, y: 20}
   _material: {fileID: 2100000, guid: 62889f89a02a2f84b8a9dd3149308e6b, type: 2}
+  _moveSpeed: 3
+  _radiusBase: 1.5
+  _radiusAmplitude: 0.75
+  _radiusFrequency: 0.25
+  _radiusCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.5
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _zoneMarkerColor: {r: 1, g: 0.6, b: 0.1, a: 0.9}
+  _zoneMarkerWidth: 0.05
+  _zoneMarkerSegments: 32
 --- !u!23 &1078944993
 MeshRenderer:
   m_ObjectHideFlags: 0
