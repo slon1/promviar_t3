@@ -507,6 +507,7 @@ MonoBehaviour:
   _zoneMarkerColor: {r: 1, g: 0.6, b: 0.1, a: 0.9}
   _zoneMarkerWidth: 0.05
   _zoneMarkerSegments: 32
+  _accumulationRate: 0.5
 --- !u!23 &1078944993
 MeshRenderer:
   m_ObjectHideFlags: 0

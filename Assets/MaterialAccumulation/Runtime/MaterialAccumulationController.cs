@@ -1,3 +1,4 @@
+using Unity.Jobs;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -31,6 +32,9 @@ namespace MaterialAccumulation
         [SerializeField] private Color _zoneMarkerColor = new Color(1f, 0.6f, 0.1f, 0.9f);
         [Min(0.001f), SerializeField] private float _zoneMarkerWidth = 0.05f;
         [Min(8), SerializeField] private int _zoneMarkerSegments = 32;
+
+        [Header("Accumulation")]
+        [Min(0f), SerializeField] private float _accumulationRate = 0.5f;
 
         private MaterialHeightmap _heightmap;
         private SurfaceMeshSync _meshSync;
@@ -115,6 +119,23 @@ namespace MaterialAccumulation
                 _radiusCurve);
 
             UpdateZoneMarker();
+
+            if (_heightmap != null && _actions.Gameplay.Accumulate.IsPressed())
+            {
+                var job = new AccumulationJob
+                {
+                    Origin = _heightmap.Origin,
+                    CellSize = _heightmap.CellSize,
+                    Width = _heightmap.Width,
+                    SegmentStart = _zone.PrevLocalPosition,
+                    SegmentEnd = _zone.LocalPosition,
+                    Radius = _zone.Radius,
+                    Rate = _accumulationRate,
+                    DeltaTime = Time.deltaTime,
+                    Heights = _heightmap.Heights,
+                };
+                job.Schedule(_heightmap.Heights.Length, 64).Complete();
+            }
         }
 
         private void OnDestroy()
