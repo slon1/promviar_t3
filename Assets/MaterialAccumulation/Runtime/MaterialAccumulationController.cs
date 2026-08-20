@@ -54,6 +54,17 @@ namespace MaterialAccumulation
             _meshSync.SyncFrom(_heightmap);
         }
 
+        public void ResetSurface()
+        {
+            if (_heightmap == null)
+            {
+                return;
+            }
+
+            _heightmap.Reset();
+            SyncMesh();
+        }
+
         private void Awake()
         {
             _resolutionX = math.max(1, _resolutionX);
@@ -120,6 +131,11 @@ namespace MaterialAccumulation
 
             UpdateZoneMarker();
 
+            if (_actions.Gameplay.Reset.WasPressedThisFrame())
+            {
+                ResetSurface();
+            }
+
             if (_heightmap != null && _actions.Gameplay.Accumulate.IsPressed())
             {
                 var job = new AccumulationJob
@@ -135,6 +151,8 @@ namespace MaterialAccumulation
                     Heights = _heightmap.Heights,
                 };
                 job.Schedule(_heightmap.Heights.Length, 64).Complete();
+
+                SyncMesh();
             }
         }
 
