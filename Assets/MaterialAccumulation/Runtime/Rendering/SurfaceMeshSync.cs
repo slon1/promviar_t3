@@ -1,5 +1,6 @@
 using System;
 using Unity.Collections;
+using Unity.Jobs;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -15,6 +16,7 @@ namespace MaterialAccumulation
         private readonly float2 _origin;
         private readonly float2 _cellSize;
         private NativeArray<float3> _vertexBuffer;
+        private NativeArray<float3> _normalBuffer;
         private Mesh _mesh;
 
         public Mesh Mesh => _mesh;
@@ -27,6 +29,7 @@ namespace MaterialAccumulation
             _cellSize = cellSize;
             _mesh = SurfaceMeshGenerator.Generate(width, depth, origin, cellSize);
             _vertexBuffer = new NativeArray<float3>(width * depth, Allocator.Persistent);
+            _normalBuffer = new NativeArray<float3>(width * depth, Allocator.Persistent);
             SurfaceGridMath.WriteGridPositions(_vertexBuffer, width, depth, origin, cellSize);
         }
 
@@ -49,6 +52,19 @@ namespace MaterialAccumulation
             }
 
             _mesh.SetVertices(_vertexBuffer);
+
+            var normalJob = new SurfaceNormalJob
+            {
+                Heights = heightmap.Heights,
+                CellSize = _cellSize,
+                Width = _width,
+                Depth = _depth,
+                Normals = _normalBuffer,
+            };
+            normalJob.Schedule(_normalBuffer.Length, 64).Complete();
+            _mesh.SetNormals(_normalBuffer);
+
+            _mesh.RecalculateBounds();
         }
 
         public void Dispose()
@@ -71,6 +87,12 @@ namespace MaterialAccumulation
             {
                 _vertexBuffer.Dispose();
                 _vertexBuffer = default;
+            }
+
+            if (_normalBuffer.IsCreated)
+            {
+                _normalBuffer.Dispose();
+                _normalBuffer = default;
             }
         }
     }
