@@ -126,7 +126,7 @@ namespace MaterialAccumulation
                 {
                     ""name"": ""WASD"",
                     ""id"": ""e92b8ffb-f29e-406d-908b-1556df705072"",
-                    ""path"": ""2DVector(mode=1)"",
+                    ""path"": ""2DVector(mode=0)"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -181,7 +181,7 @@ namespace MaterialAccumulation
                 {
                     ""name"": ""Arrows"",
                     ""id"": ""9ffeabbf-0d9f-4d32-962b-5c3b20c0cbcd"",
-                    ""path"": ""2DVector(mode=1)"",
+                    ""path"": ""2DVector(mode=0)"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
